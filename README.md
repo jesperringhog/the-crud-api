@@ -25,8 +25,8 @@ För att kunna se någonting är det bra om ni skapar ett mycket enkelt frontend
 ## Betyg VG
 
 - Samtliga punkter för G
-- Sortering på serversidan
-- Sökning på serversidan
+- Sortering på serversidan, både av produkter och ordrar
+- Sökning på serversidan, både av produkter och ordrar
 - En modell för ordrar:
   - En order innehåller information om en order (såsom kundinformation, datum, et.c.)
   - En order innehåller en lista med objekt. Dessa objekt beskriver vilken produkt som finns i varukorgen och hur många av den det finns
