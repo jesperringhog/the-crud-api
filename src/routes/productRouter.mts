@@ -36,7 +36,7 @@ productRouter.post("/", async (req, res) => {
   }
 });
 
-productRouter.get("/", async (req, res) => {
+productRouter.get("/", async (_, res) => {
   try {
     const products = await getProducts();
 
