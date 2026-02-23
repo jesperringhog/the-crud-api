@@ -2,7 +2,9 @@ import express from "express";
 import {
   createProduct,
   getProducts,
+  updateProduct,
 } from "../controller/productController.mjs";
+import type { ProductDTO } from "../models/ProductDTO.mjs";
 
 export const productRouter = express.Router();
 
@@ -11,20 +13,16 @@ productRouter.post("/", async (req, res) => {
     const { name, price } = req.body;
 
     if (name && name === "") {
-      res
-        .status(400)
-        .json({
-          message: "Body is missing property: name, or it's value is empty",
-        });
+      res.status(400).json({
+        message: "Body is missing property: name, or it's value is empty",
+      });
       return;
     }
 
     if (price && price === "") {
-      res
-        .status(400)
-        .json({
-          message: "Body is missing property: price, or it's value is empty",
-        });
+      res.status(400).json({
+        message: "Body is missing property: price, or it's value is empty",
+      });
       return;
     }
 
@@ -41,6 +39,31 @@ productRouter.get("/", async (_, res) => {
     const products = await getProducts();
 
     res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+});
+
+productRouter.patch("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { product }: { product: ProductDTO} = req.body;
+
+    if (+id === product.id) {
+      const foundProduct = await updateProduct(product);
+
+      if (foundProduct) {
+        res.status(200).json(foundProduct);
+        return;
+      }
+
+      res.status(404).json({ message: "Product not found" });
+    }
+
+    res
+      .status(400)
+      .json({ message: "Id in parameter and body does not match" });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
