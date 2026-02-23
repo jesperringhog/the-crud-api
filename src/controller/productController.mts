@@ -15,3 +15,13 @@ export const updateProduct = async (product: ProductDTO) => {
 
   return product;
 };
+
+export const removeProduct = async (id: string) => {
+  const removedProduct = await Product.findOneAndDelete({ id: +id });
+
+  if (removedProduct) {
+    return true;
+  }
+
+  return false;
+};
