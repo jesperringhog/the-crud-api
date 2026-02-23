@@ -1,10 +1,10 @@
 import { model, Schema } from "mongoose";
 
-const productSchema = new Schema({
-  id: { type: Number, required: true },
+export const productSchema = new Schema({
+  articleNumber: { type: Number, required: true },
   name: { type: String, required: true },
   price: { type: Number, required: true },
-  description: { type: String, required: false },
+  amount: { type: Number, required: true },
 });
 
 export const Product = model("product", productSchema);
