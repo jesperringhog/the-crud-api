@@ -6,3 +6,5 @@ export const createProduct = async (name: string, price: number) =>
     name,
     price,
   });
+
+  export const getProducts = async () => await Product.find();

@@ -27,5 +27,5 @@ app.listen(port, async (error) => {
   } catch (error) {
     console.error(error);
   }
-  console.log(`The CRUD Api is running on port: ${port}, and is connected to db: ${mongoose.connection.name}`);
+  console.log(`The CRUD Api is running on port: ${port}, and is connected to database: ${mongoose.connection.name}`);
 });
