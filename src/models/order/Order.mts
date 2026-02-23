@@ -1,5 +1,5 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import { productSchema } from "./Product.mjs";
+import { productSchema } from "../product/Product.mjs";
 import type { OrderDTO } from "./OrderDTO.mjs";
 
 const orderSchema = new Schema({
@@ -11,9 +11,9 @@ const orderSchema = new Schema({
 
 export const Order = model("order", orderSchema);
 
-export type OrderFromDb = InferSchemaType<typeof orderSchema>;
+export type DbOrder = InferSchemaType<typeof orderSchema>;
 
-export const dbOrderToDto = (dbOrder: OrderFromDb): OrderDTO => {
+export const dbOrderToDto = (dbOrder: DbOrder): OrderDTO => {
   return {
     orderNumber: dbOrder.orderNumber,
     date: dbOrder.date,
@@ -23,7 +23,7 @@ export const dbOrderToDto = (dbOrder: OrderFromDb): OrderDTO => {
         articleNumber: p.articleNumber,
         name: p.name,
         price: p.price,
-        amount: p.amount,
+        quantity: p.quantity,
       };
     }),
   };

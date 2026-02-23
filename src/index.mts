@@ -2,6 +2,7 @@ import { config } from "dotenv";
 import express, { json } from "express";
 import mongoose from "mongoose";
 import { productRouter } from "./routes/productRouter.mjs";
+import { orderRouter } from "./routes/orderRouter.mjs";
 
 config();
 
@@ -16,6 +17,7 @@ const app = express();
 app.use(json());
 
 app.use("/products", productRouter);
+app.use("/orders", orderRouter);
 
 app.listen(port, async (error) => {
   if (error) {

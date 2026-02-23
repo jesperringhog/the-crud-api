@@ -4,8 +4,8 @@ import {
   getProducts,
   removeProduct,
   updateProduct,
-} from "../controller/productController.mjs";
-import type { ProductDTO } from "../models/ProductDTO.mjs";
+} from "../controllers/productController.mjs";
+import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 
 export const productRouter = express.Router();
 
@@ -35,9 +35,12 @@ productRouter.post("/", async (req, res) => {
   }
 });
 
-productRouter.get("/", async (_, res) => {
+productRouter.get("/", async (req, res) => {
   try {
-    const products = await getProducts();
+
+    const { sort } = req.query;
+
+    const products = await getProducts(sort);
 
     res.status(200).json(products);
   } catch (error) {
@@ -51,7 +54,7 @@ productRouter.patch("/:id", async (req, res) => {
     const { id } = req.params;
     const { product }: { product: ProductDTO } = req.body;
 
-    if (+id === product.id) {
+    if (+id === product.articleNumber) {
       const foundProduct = await updateProduct(product);
 
       if (foundProduct) {
@@ -71,11 +74,11 @@ productRouter.patch("/:id", async (req, res) => {
   }
 });
 
-productRouter.delete("/:id", async (req, res) => {
+productRouter.delete("/:articleNumber", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { articleNumber } = req.params;
 
-    const removeSuccess = await removeProduct(id);
+    const removeSuccess = await removeProduct(articleNumber);
 
     if (removeSuccess) {
       res.status(200).json();

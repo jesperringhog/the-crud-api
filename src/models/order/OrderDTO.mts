@@ -1,4 +1,4 @@
-import type { ProductDTO } from "./ProductDTO.mjs";
+import type { ProductDTO } from "../product/ProductDTO.mjs";
 
 export type OrderDTO = {
     orderNumber: number;
