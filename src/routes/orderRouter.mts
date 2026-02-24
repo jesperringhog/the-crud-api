@@ -20,9 +20,9 @@ orderRouter.post("/", async (req, res) => {
       return;
     }
 
-    const createdOrder = await createOrder(customer);
+    const created = await createOrder(customer);
 
-    res.status(201).json(customer);
+    res.status(201).json(created);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
@@ -42,37 +42,39 @@ orderRouter.get("/", async (req, res) => {
   }
 });
 
-orderRouter.patch("/:ordernumber", async (req, res) => {
+orderRouter.patch("/:orderNumber", async (req, res) => {
   try {
-    const { ordernumber } = req.params;
+    const { orderNumber } = req.params;
     const { order }: { order: OrderDTO } = req.body;
 
-    if (+ordernumber === order.orderNumber) {
-      const updateSuccess = await updateOrder(order);
+    if (+orderNumber === order.orderNumber) {
+      const success = await updateOrder(order);
 
-      if (updateSuccess) {
-        res.status(200).json(updateSuccess);
+      if (success) {
+        res.status(200).json(success);
         return;
       }
 
-      res
-      .status(404)
-      .json({ message: "Ordernumber in body and parameter does not match" });
+      res.status(400).json({
+        message: "Update failed. Body is missing property: orderNumber",
+      });
     }
-    
-    res.status(400).json({ message: "Update failed. Body is missing property: orderNumber" });
+
+    res.status(404).json({
+      message: `The value for orderNumber in body does not match with parameter: ${orderNumber}`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
   }
 });
 
-orderRouter.delete("/:ordernumber", async (req, res) => {
+orderRouter.delete("/:orderNumber", async (req, res) => {
   try {
-    const { ordernumber } = req.params;
+    const { orderNumber } = req.params;
 
-    if (ordernumber) {
-      const success = await removeOrder(ordernumber);
+    if (orderNumber) {
+      const success = await removeOrder(orderNumber);
 
       if (success) {
         res.status(200).json();
@@ -82,7 +84,7 @@ orderRouter.delete("/:ordernumber", async (req, res) => {
       res.status(404).json({ message: "Delete failed: order not found" });
     }
 
-    res.status(400).json(`Can not find ordernumber: ${ordernumber}`)
+    res.status(400).json(`Can not find ordernumber: ${orderNumber}`);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

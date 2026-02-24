@@ -27,8 +27,8 @@ productRouter.post("/", async (req, res) => {
       return;
     }
 
-    const createdProduct = await createProduct(name, price);
-    res.status(201).json(createdProduct);
+    const created = await createProduct(name, price);
+    res.status(201).json(created);
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
@@ -48,45 +48,48 @@ productRouter.get("/", async (req, res) => {
   }
 });
 
-productRouter.patch("/:articlenumber", async (req, res) => {
+productRouter.patch("/:itemNumber", async (req, res) => {
   try {
-    const { articlenumber } = req.params;
+    const { itemNumber } = req.params;
     const { product }: { product: ProductDTO } = req.body;
 
-    if (+articlenumber === product.articleNumber) {
-      const updateSuccess = await updateProduct(product);
+    if (+itemNumber === product.itemNumber) {
+      const success = await updateProduct(product);
 
-      if (updateSuccess) {
-        res.status(200).json(updateSuccess);
+      if (success) {
+        res.status(200).json(success);
         return;
       }
 
-      res
-        .status(400)
-        .json({
-          message: "Articlenumber in body does not match with parameter",
-        });
+      res.status(404).json({
+        message: "Update failed. Body is missing property: itemNumber",
+      });
     }
 
-    res.status(404).json({ message: "Update failed. Body is missing property: articleNumber" });
+    res.status(400).json({
+      message: `The value for itemNumber in body does not match with parameter: ${itemNumber}`,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
   }
 });
 
-productRouter.delete("/:articlenumber", async (req, res) => {
+productRouter.delete("/:itemNumber", async (req, res) => {
   try {
-    const { articlenumber } = req.params;
+    const { itemNumber } = req.params;
 
-    const removeSuccess = await removeProduct(articlenumber);
+    if (itemNumber) {
+      const success = await removeProduct(itemNumber);
 
-    if (removeSuccess) {
-      res.status(200).json();
-      return;
+      if (success) {
+        res.status(200).json();
+        return;
+      }
+      res.status(404).json({ message: "Nothing to delete: product not found" });
     }
 
-    res.status(404).json({ message: "Nothing to delete: product not found" });
+    res.status(400).json({ message: `Item number: ${itemNumber} not found` });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

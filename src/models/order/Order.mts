@@ -21,10 +21,9 @@ export const dbOrderToDto = (dbOrder: DbOrder): OrderDTO => {
     customer: dbOrder.customer,
     products: dbOrder.products.map((p) => {
       return {
-        articleNumber: p.articleNumber,
+        itemNumber: p.itemNumber,
         name: p.name,
         price: p.price,
-        quantity: p.quantity,
       } satisfies ProductDTO;
     }),
   } satisfies OrderDTO;

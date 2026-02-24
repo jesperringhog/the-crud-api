@@ -3,27 +3,27 @@ import type { OrderDTO } from "../models/order/OrderDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
 export const createOrder = async (customer: string) => {
-  const newOrder = await Order.create({
+  const created = await Order.create({
     orderNumber: Date.now(),
     date: +new Date(),
     customer,
     products: [],
   });
 
-  return dbOrderToDto(newOrder);
+  return dbOrderToDto(created);
 };
 
 export const getOrders = async (sort: QueryParamValue) => {
-  const dbOrders = await Order.find();
+  const fromDb = await Order.find();
 
-  let dtoOrders = dbOrders.map((o) => dbOrderToDto(o));
+  let dtos = fromDb.map((o) => dbOrderToDto(o));
 
   if (sort) {
     const direction = sort === "asc" ? 1 : -1;
-    dtoOrders.sort((a, b) => (a.orderNumber - b.orderNumber) * direction);
+    dtos.sort((a, b) => (a.orderNumber - b.orderNumber) * direction);
   }
 
-  return dtoOrders;
+  return dtos;
 };
 
 export const updateOrder = async (order: OrderDTO) => {

@@ -1,23 +1,21 @@
 import { Product } from "../models/product/Product.mjs";
 import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
-import { sortList } from "../utils/sortBase.mjs";
 
 export const createProduct = async (name: string, price: number) =>
   await Product.create({
-    articleNumber: Date.now(),
+    itemNumber: Date.now(),
     name,
     price,
-    quantity: 1,
   });
 
 export const getProducts = async (sort: QueryParamValue) => {
-  const foundProducts = await Product.find();
+  const found = await Product.find();
 
-  let products = [...foundProducts];
+  let products = [...found];
   if (sort) {
     const direction = sort === "asc" ? 1 : -1;
-    products.sort((a, b) => (a.articleNumber - b.articleNumber) * direction);
+    products.sort((a, b) => (a.itemNumber - b.itemNumber) * direction);
   }
 
   return products;
@@ -25,16 +23,16 @@ export const getProducts = async (sort: QueryParamValue) => {
 
 export const updateProduct = async (product: ProductDTO) => {
   const updated = await Product.findOneAndUpdate(
-    { articleNumber: product.articleNumber },
+    { articleNumber: product.itemNumber },
     product,
   );
 
   return updated ? product : false;
 };
 
-export const removeProduct = async (articleNumber: string) => {
+export const removeProduct = async (itemNumber: string) => {
   const removed = await Product.findOneAndDelete({
-    articleNumber: +articleNumber,
+    itemNumber: +itemNumber,
   });
 
   return removed ? true : false;
