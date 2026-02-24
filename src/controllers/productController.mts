@@ -24,22 +24,18 @@ export const getProducts = async (sort: QueryParamValue) => {
 };
 
 export const updateProduct = async (product: ProductDTO) => {
-  await Product.findOneAndUpdate(
+  const updated = await Product.findOneAndUpdate(
     { articleNumber: product.articleNumber },
     product,
   );
 
-  return product;
+  return updated ? product : false;
 };
 
 export const removeProduct = async (articleNumber: string) => {
-  const removedProduct = await Product.findOneAndDelete({
+  const removed = await Product.findOneAndDelete({
     articleNumber: +articleNumber,
   });
 
-  if (removedProduct) {
-    return true;
-  }
-
-  return false;
+  return removed ? true : false;
 };

@@ -1,6 +1,7 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
 import { productSchema } from "../product/Product.mjs";
 import type { OrderDTO } from "./OrderDTO.mjs";
+import type { ProductDTO } from "../product/ProductDTO.mjs";
 
 const orderSchema = new Schema({
   orderNumber: { type: Number, required: true },
@@ -24,7 +25,7 @@ export const dbOrderToDto = (dbOrder: DbOrder): OrderDTO => {
         name: p.name,
         price: p.price,
         quantity: p.quantity,
-      };
+      } satisfies ProductDTO;
     }),
-  };
+  } satisfies OrderDTO;
 };

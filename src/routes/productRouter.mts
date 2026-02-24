@@ -37,7 +37,6 @@ productRouter.post("/", async (req, res) => {
 
 productRouter.get("/", async (req, res) => {
   try {
-
     const { sort } = req.query;
 
     const products = await getProducts(sort);
@@ -49,43 +48,45 @@ productRouter.get("/", async (req, res) => {
   }
 });
 
-productRouter.patch("/:id", async (req, res) => {
+productRouter.patch("/:articlenumber", async (req, res) => {
   try {
-    const { id } = req.params;
+    const { articlenumber } = req.params;
     const { product }: { product: ProductDTO } = req.body;
 
-    if (+id === product.articleNumber) {
-      const foundProduct = await updateProduct(product);
+    if (+articlenumber === product.articleNumber) {
+      const updateSuccess = await updateProduct(product);
 
-      if (foundProduct) {
-        res.status(200).json(foundProduct);
+      if (updateSuccess) {
+        res.status(200).json(updateSuccess);
         return;
       }
 
-      res.status(404).json({ message: "Update failed: product not found" });
+      res
+        .status(400)
+        .json({
+          message: "Articlenumber in body does not match with parameter",
+        });
     }
 
-    res
-      .status(400)
-      .json({ message: "Id in parameter and body does not match" });
+    res.status(404).json({ message: "Update failed. Body is missing property: articleNumber" });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
   }
 });
 
-productRouter.delete("/:articleNumber", async (req, res) => {
+productRouter.delete("/:articlenumber", async (req, res) => {
   try {
-    const { articleNumber } = req.params;
+    const { articlenumber } = req.params;
 
-    const removeSuccess = await removeProduct(articleNumber);
+    const removeSuccess = await removeProduct(articlenumber);
 
     if (removeSuccess) {
       res.status(200).json();
       return;
     }
 
-    res.status(404).json({ message: "Product not found, nothing to delete" });
+    res.status(404).json({ message: "Nothing to delete: product not found" });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
