@@ -4,8 +4,8 @@ import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
 export const createOrder = async (customer: string) => {
   const created = await Order.create({
-    orderNumber: Date.now(),
-    date: +new Date(),
+    orderNumber: +Date.now().toString().slice(-8),
+    date: +new Date().toISOString().replace(/\D/g, "").slice(0, 8),
     customer,
     products: [],
   });

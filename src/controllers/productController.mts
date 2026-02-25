@@ -4,7 +4,7 @@ import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
 export const createProduct = async (name: string, price: number) =>
   await Product.create({
-    itemNumber: Date.now(),
+    itemNumber: +Date.now().toString().slice(5),
     name,
     price,
   });
