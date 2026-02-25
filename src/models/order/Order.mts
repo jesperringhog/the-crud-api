@@ -1,30 +1,22 @@
 import { model, Schema, type InferSchemaType } from "mongoose";
-import { productSchema } from "../product/Product.mjs";
 import type { OrderDTO } from "./OrderDTO.mjs";
-import type { ProductDTO } from "../product/ProductDTO.mjs";
+import { cartItemSchema, dbCartItemToDto } from "../cartItem/CartItem.mjs";
 
 const orderSchema = new Schema({
   orderNumber: { type: Number, required: true },
   date: { type: Number, required: true },
   customer: { type: String, required: true },
-  products: [productSchema],
+  cartItems: [cartItemSchema],
 });
 
 export const Order = model("order", orderSchema);
 
 export type DbOrder = InferSchemaType<typeof orderSchema>;
 
-export const dbOrderToDto = (dbOrder: DbOrder): OrderDTO => {
-  return {
+export const dbOrderToDto = (dbOrder: DbOrder): OrderDTO =>
+  ({
     orderNumber: dbOrder.orderNumber,
     date: dbOrder.date,
     customer: dbOrder.customer,
-    products: dbOrder.products.map((p) => {
-      return {
-        itemNumber: p.itemNumber,
-        name: p.name,
-        price: p.price,
-      } satisfies ProductDTO;
-    }),
-  } satisfies OrderDTO;
-};
+    cartItems: dbOrder.cartItems.map(dbCartItemToDto),
+  }) satisfies OrderDTO;
