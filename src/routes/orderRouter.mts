@@ -20,7 +20,7 @@ orderRouter.post("/", async (req, res) => {
       return;
     }
 
-    const created = await createOrder(customer);
+    const created: OrderDTO = await createOrder(customer);
 
     res.status(201).json(created);
   } catch (error) {
