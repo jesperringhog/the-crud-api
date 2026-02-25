@@ -31,9 +31,9 @@ orderRouter.post("/", async (req, res) => {
 
 orderRouter.get("/", async (req, res) => {
   try {
-    const { sort } = req.query;
+    const { sort, filter } = req.query;
 
-    const orders = await getOrders(sort);
+    const orders = await getOrders(sort, filter);
 
     res.status(200).json(orders);
   } catch (error) {

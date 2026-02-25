@@ -37,9 +37,9 @@ productRouter.post("/", async (req, res) => {
 
 productRouter.get("/", async (req, res) => {
   try {
-    const { sort } = req.query;
+    const { sort, filter } = req.query;
 
-    const products = await getProducts(sort);
+    const products = await getProducts(sort, filter);
 
     res.status(200).json(products);
   } catch (error) {
@@ -67,7 +67,7 @@ productRouter.patch("/:itemNumber", async (req, res) => {
     }
 
     res.status(400).json({
-      message: `The value for itemNumber in body does not match with parameter: ${itemNumber}`,
+      message: `Item number: ${itemNumber} not found, or body value and parameter does not match`,
     });
   } catch (error) {
     console.error(error);

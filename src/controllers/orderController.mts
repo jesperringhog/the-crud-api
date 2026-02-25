@@ -13,7 +13,7 @@ export const createOrder = async (customer: string) => {
   return dbOrderToDto(created);
 };
 
-export const getOrders = async (sort: QueryParamValue) => {
+export const getOrders = async (sort: QueryParamValue, filter: QueryParamValue) => {
   const fromDb = await Order.find();
 
   let dtos = fromDb.map((o) => dbOrderToDto(o));
@@ -21,6 +21,10 @@ export const getOrders = async (sort: QueryParamValue) => {
   if (sort) {
     const direction = sort === "asc" ? 1 : -1;
     dtos.sort((a, b) => (a.orderNumber - b.orderNumber) * direction);
+  }
+
+  if (filter) {
+    dtos = dtos.filter((o) => o.customer.toLowerCase().includes(filter.toString()));
   }
 
   return dtos;

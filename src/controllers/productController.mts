@@ -9,7 +9,7 @@ export const createProduct = async (name: string, price: number) =>
     price,
   });
 
-export const getProducts = async (sort: QueryParamValue) => {
+export const getProducts = async (sort: QueryParamValue, filter: QueryParamValue) => {
   const found = await Product.find();
 
   let products = [...found];
@@ -18,12 +18,16 @@ export const getProducts = async (sort: QueryParamValue) => {
     products.sort((a, b) => (a.itemNumber - b.itemNumber) * direction);
   }
 
+  if (filter) {
+    products = products.filter((p) => p.name.toLowerCase().includes(filter.toString())); 
+  }
+
   return products;
 };
 
 export const updateProduct = async (product: ProductDTO) => {
   const updated = await Product.findOneAndUpdate(
-    { articleNumber: product.itemNumber },
+    { itemNumber: product.itemNumber },
     product,
   );
 
