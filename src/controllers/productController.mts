@@ -1,28 +1,38 @@
-import { Product } from "../models/product/Product.mjs";
+import { dbProductToDto, Product } from "../models/product/Product.mjs";
 import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
-export const createProduct = async (name: string, price: number) =>
-  await Product.create({
+export const createProduct = async (name: string, price: number) => {
+  const newDbProduct = await Product.create({
     itemNumber: +Date.now().toString().slice(5),
     name,
     price,
   });
 
-export const getProducts = async (sort: QueryParamValue, filter: QueryParamValue) => {
-  const found = await Product.find();
+  return dbProductToDto(newDbProduct);
+};
 
-  let products = [...found];
+export const getProducts = async (
+  sort: QueryParamValue,
+  filter: QueryParamValue,
+) => {
+  
+  const dbProducts = await Product.find();
+
+  let productDtos = dbProducts.map((p) => dbProductToDto(p));
+
   if (sort) {
     const direction = sort === "asc" ? 1 : -1;
-    products.sort((a, b) => (a.itemNumber - b.itemNumber) * direction);
+    productDtos.sort((a, b) => (a.itemNumber - b.itemNumber) * direction);
   }
 
   if (filter) {
-    products = products.filter((p) => p.name.toLowerCase().includes(filter.toString())); 
+    productDtos = productDtos.filter((p) =>
+      p.name.toLowerCase().includes(filter.toString()),
+    );
   }
 
-  return products;
+  return productDtos;
 };
 
 export const updateProduct = async (product: ProductDTO) => {
