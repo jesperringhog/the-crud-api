@@ -1,21 +1,25 @@
 import type { Product } from "../models/Product";
 
 export const createHtmlForProducts = (products: Product[]) => {
-    const app = document.getElementById("app");
+    const productList = document.getElementById("productList");
 
-    if (app === null) return;
+    if (productList === null) return;
+    productList.innerHTML = "";
 
     products.forEach((p) => {
-        const itemNumber = document.createElement("p");
+        const productContainer = document.createElement("li");
+        const id = document.createElement("p");
         const name = document.createElement("h2");
         const price = document.createElement("h4");
 
-        itemNumber.innerHTML = p.itemNumber.toString();
+        productContainer.className = "productContainer";
+        id.innerHTML = p.id.toString();
         name.innerHTML = p.name;
         price.innerHTML = p.price.toString();
 
-        app.appendChild(itemNumber);
-        app.appendChild(name);
-        app.appendChild(price);
+        productContainer.appendChild(id);
+        productContainer.appendChild(name);
+        productContainer.appendChild(price);
+        productList.appendChild(productContainer);
     })
 }

@@ -3,7 +3,7 @@ import type { ProductDTO } from "./ProductDTO.mjs";
 
 export const productSchema = new Schema({
   id: { type: Number, required: true, unique: true },
-  name: { type: String, required: true, unique: true, minLength: 5 },
+  name: { type: String, required: true, unique: true, minLength: 3 },
   price: { type: Number, required: true },
 });
 
