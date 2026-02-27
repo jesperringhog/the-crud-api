@@ -1,5 +1,5 @@
 export type ProductDTO = {
-    itemNumber: number,
+    id: number,
     name: string,
     price: number,
 }

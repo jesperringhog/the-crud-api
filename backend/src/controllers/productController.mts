@@ -4,7 +4,7 @@ import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
 export const createProduct = async (name: string, price: number) => {
   const newDbProduct = await Product.create({
-    itemNumber: +Date.now().toString().slice(5),
+    id: +Date.now().toString().slice(5),
     name,
     price,
   });
@@ -23,7 +23,7 @@ export const getProducts = async (
 
   if (sort) {
     const direction = sort === "asc" ? 1 : -1;
-    productDtos.sort((a, b) => (a.itemNumber - b.itemNumber) * direction);
+    productDtos.sort((a, b) => (a.id - b.id) * direction);
   }
 
   if (filter) {
@@ -37,16 +37,16 @@ export const getProducts = async (
 
 export const updateProduct = async (product: ProductDTO) => {
   const updated = await Product.findOneAndUpdate(
-    { itemNumber: product.itemNumber },
+    { id: product.id },
     product,
   );
 
   return updated ? product : false;
 };
 
-export const removeProduct = async (itemNumber: string) => {
+export const removeProduct = async (id: string) => {
   const removed = await Product.findOneAndDelete({
-    itemNumber: +itemNumber,
+    id: +id,
   });
 
   return removed ? true : false;

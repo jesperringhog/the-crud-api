@@ -48,12 +48,12 @@ productRouter.get("/", async (req, res) => {
   }
 });
 
-productRouter.patch("/:itemNumber", async (req, res) => {
+productRouter.patch("/:id", async (req, res) => {
   try {
-    const { itemNumber } = req.params;
+    const { id } = req.params;
     const { product }: { product: ProductDTO } = req.body;
 
-    if (+itemNumber === product.itemNumber) {
+    if (+id === product.id) {
       const success = await updateProduct(product);
 
       if (success) {
@@ -62,12 +62,12 @@ productRouter.patch("/:itemNumber", async (req, res) => {
       }
 
       res.status(404).json({
-        message: "Update failed. Body is missing property: itemNumber",
+        message: "Update failed. Body is missing property: id",
       });
     }
 
     res.status(400).json({
-      message: `Item number: ${itemNumber} not found, or body value and parameter does not match`,
+      message: `Id: ${id} not found, or body value and parameter does not match`,
     });
   } catch (error) {
     console.error(error);
@@ -75,12 +75,12 @@ productRouter.patch("/:itemNumber", async (req, res) => {
   }
 });
 
-productRouter.delete("/:itemNumber", async (req, res) => {
+productRouter.delete("/:id", async (req, res) => {
   try {
-    const { itemNumber } = req.params;
+    const { id } = req.params;
 
-    if (itemNumber) {
-      const success = await removeProduct(itemNumber);
+    if (id) {
+      const success = await removeProduct(id);
 
       if (success) {
         res.status(200).json();
@@ -89,7 +89,7 @@ productRouter.delete("/:itemNumber", async (req, res) => {
       res.status(404).json({ message: "Nothing to delete: product not found" });
     }
 
-    res.status(400).json({ message: `Item number: ${itemNumber} not found` });
+    res.status(400).json({ message: `Id: ${id} not found` });
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
