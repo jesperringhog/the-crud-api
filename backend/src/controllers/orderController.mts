@@ -14,20 +14,18 @@ export const createOrder = async (customer: string) => {
 };
 
 export const getOrders = async (sort: QueryParamValue, filter: QueryParamValue) => {
-  const dbOrders = await Order.find();
-
-  let orderDtos = dbOrders.map((o) => dbOrderToDto(o));
+  const query: any = {};
+  const sortOption: any = {};
 
   if (sort) {
-    const direction = sort === "asc" ? 1 : -1;
-    orderDtos.sort((a, b) => (a.orderNumber - b.orderNumber) * direction);
+    sort === "asc" ? sortOption.orderNumber = 1 : sortOption.orderNumber = -1;
   }
 
-  if (filter) {
-    orderDtos = orderDtos.filter((o) => o.customer.toLowerCase().includes(filter.toString()));
-  }
+  filter ? query.customer = { $regex: filter, $options: "i"} : {};
 
-  return orderDtos;
+  const orders = await Order.find(query).sort(sortOption);
+
+  return orders.map(dbOrderToDto);
 };
 
 export const updateOrder = async (order: OrderDTO) => {

@@ -1,4 +1,8 @@
-import { dbProductToDto, Product } from "../models/product/Product.mjs";
+import {
+  dbProductToDto,
+  Product,
+  type dbProduct,
+} from "../models/product/Product.mjs";
 import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
@@ -16,32 +20,26 @@ export const getProducts = async (
   sort: QueryParamValue,
   filter: QueryParamValue,
 ) => {
-  
-  const dbProducts = await Product.find();
-
-  let productDtos = dbProducts.map((p) => dbProductToDto(p));
+  const query: any = {};
+  const sortOption: any = {};
 
   if (sort) {
-    const direction = sort === "asc" ? 1 : -1;
-    productDtos.sort((a, b) => (a.id - b.id) * direction);
+    sort === "asc" ? sortOption.id = 1 : sortOption.id = -1;
   }
 
-  if (filter) {
-    productDtos = productDtos.filter((p) =>
-      p.name.toLowerCase().includes(filter.toString()),
-    );
-  }
+  filter ? query.name = { $regex: filter, $options: "i"} : {};
 
-  return productDtos;
+  const products = await Product.find(query).sort(sortOption);
+
+  return products.map(dbProductToDto);
 };
 
-export const updateProduct = async (product: ProductDTO) => {
-  const updated = await Product.findOneAndUpdate(
-    { id: product.id },
-    product,
-  );
+export const updateProduct = async (product: dbProduct) => {
+  const updated = await Product.findOneAndUpdate({ id: product.id }, product, {
+    new: true,
+  });
 
-  return updated ? product : false;
+  if (updated) return dbProductToDto(updated);
 };
 
 export const removeProduct = async (id: string) => {
