@@ -1,4 +1,4 @@
-import "./style.css";
+import "/src/styles/style.scss";
 import { initCreateProduct } from "./utils/initCreateProduct";
 import { refreshProductList } from "./utils/refreshProductList";
 

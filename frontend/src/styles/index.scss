@@ -1,0 +1,13 @@
+#cube {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .cubeTop {
+    width: 200px;
+    height: 200px;
+    background-color: black;
+    clip-path: polygon(0% 0%, 100% 0%, 50% 50%);
+  }
+}
