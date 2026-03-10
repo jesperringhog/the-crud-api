@@ -3,7 +3,7 @@ import type { ProductDTO } from "./ProductDTO.mjs";
 
 export const productSchema = new Schema({
   id: { type: Number, required: true, unique: true },
-  name: { type: String, required: true, unique: true, minLength: 3 },
+  title: { type: String, required: true, unique: true, minLength: 3 },
   price: { type: Number, required: true },
 });
 
@@ -13,6 +13,6 @@ export type dbProduct = InferSchemaType<typeof productSchema>;
 
 export const dbProductToDto = (dbProduct: dbProduct): ProductDTO => ({
     id: dbProduct.id,
-    name: dbProduct.name,
+    title: dbProduct.title,
     price: dbProduct.price,
 } satisfies ProductDTO);

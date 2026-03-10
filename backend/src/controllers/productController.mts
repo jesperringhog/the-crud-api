@@ -6,10 +6,10 @@ import {
 import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
-export const createProduct = async (name: string, price: number) => {
+export const createProduct = async (title: string, price: number) => {
   const newDbProduct = await Product.create({
     id: +Date.now().toString().slice(5),
-    name,
+    title,
     price,
   });
 
@@ -39,7 +39,9 @@ export const updateProduct = async (product: dbProduct) => {
     new: true,
   });
 
-  if (updated) return dbProductToDto(updated);
+  if (!updated) return false;
+
+  return dbProductToDto(updated);
 };
 
 export const removeProduct = async (id: string) => {

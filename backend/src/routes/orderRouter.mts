@@ -11,15 +11,15 @@ export const orderRouter = express.Router();
 
 orderRouter.post("/", async (req, res) => {
   try {
-    const { customer } = req.body;
+    const { user } = req.body;
 
-    if (!customer || customer.trim() === "") {
+    if (!user || user.trim() === "") {
       return res.status(400).json({
-        message: "Body is missing property: customer, or its value is empty",
+        message: "Body is missing property: user, or its value is empty",
       });
     }
 
-    const created: OrderDTO = await createOrder(customer);
+    const created: OrderDTO = await createOrder(user);
 
     res.status(201).json(created);
   } catch (error) {

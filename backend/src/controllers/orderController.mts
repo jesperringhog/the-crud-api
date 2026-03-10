@@ -2,11 +2,11 @@ import { dbOrderToDto, Order, type DbOrder } from "../models/order/Order.mjs";
 import type { OrderDTO } from "../models/order/OrderDTO.mjs";
 import type { QueryParamValue } from "../models/raw/QueryParamValue.mjs";
 
-export const createOrder = async (customer: string) => {
+export const createOrder = async (user: string) => {
   const newDbOrder = await Order.create({
     orderNumber: +Date.now().toString().slice(-8),
     date: +new Date().toISOString().replace(/\D/g, "").slice(0, 8),
-    customer,
+    user,
     cartItems: [],
   });
 

@@ -1,9 +1,9 @@
 import type { CartItemDTO } from "../cartItem/CartItemDTO.mjs";
-import type { ProductDTO } from "../product/ProductDTO.mjs";
+import type { UserDTO } from "../customer/UserDTO.mjs";
 
 export type OrderDTO = {
     orderNumber: number;
     date: number;
-    customer: string;
+    user: UserDTO[];
     cartItems: CartItemDTO[];
 }

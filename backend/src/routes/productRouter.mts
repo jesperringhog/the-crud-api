@@ -10,16 +10,22 @@ import type { ProductDTO } from "../models/product/ProductDTO.mjs";
 export const productRouter = express.Router();
 
 productRouter.post("/", async (req, res) => {
+  const { title, price } = req.body;
+
+  if (
+    !title ||
+    title.trim() === "" ||
+    typeof price !== "number" ||
+    !Number.isFinite(price)
+  )
+    return res.status(400).json({
+      message:
+        "Body is missing property: title and/or price, or their values are empty",
+    });
+
   try {
-    const { name, price } = req.body;
+    const created = await createProduct(title, price);
 
-    if (!name || name.trim() === "" && typeof price !== "number" || !Number.isFinite(price)) {
-      return res.status(400).json({
-        message: "Body is missing property: name and price, or values are empty or invalid",
-      });
-    }
-
-    const created = await createProduct(name, price);
     res.status(201).json(created);
   } catch (error) {
     console.error(error);
@@ -28,9 +34,9 @@ productRouter.post("/", async (req, res) => {
 });
 
 productRouter.get("/", async (req, res) => {
-  try {
-    const { sort, filter } = req.query;
+  const { sort, filter } = req.query;
 
+  try {
     const products = await getProducts(sort, filter);
 
     res.status(200).json(products);
@@ -41,16 +47,14 @@ productRouter.get("/", async (req, res) => {
 });
 
 productRouter.patch("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { product }: { product: ProductDTO } = req.body;
+  const { id } = req.params;
+  const { product }: { product: ProductDTO } = req.body;
 
+  try {
     if (id && +id === product.id) {
       const success = await updateProduct(product);
 
-      if (success) {
-        return res.status(200).json(success);
-      }
+      if (success) return res.status(200).json(success);
 
       return res.status(400).json({
         message: "Update failed. Body is missing property: id",
@@ -67,9 +71,9 @@ productRouter.patch("/:id", async (req, res) => {
 });
 
 productRouter.delete("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
 
+  try {
     if (id) {
       const success = await removeProduct(id);
 
@@ -78,7 +82,6 @@ productRouter.delete("/:id", async (req, res) => {
       }
       res.status(400).json({ message: `Id: ${id} not found` });
     }
-
   } catch (error) {
     console.error(error);
     res.status(500).json(error);
