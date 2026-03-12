@@ -35,7 +35,7 @@ app.use(
 );
 app.use(cookieparser())
 
-app.use("/products", productRouter);
+app.use("/products", auth, productRouter);
 app.use("/orders", orderRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);

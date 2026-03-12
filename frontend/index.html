@@ -8,7 +8,19 @@
   <body>
     <div id="app">
       <h1>The CRUD Api</h1>
-      <div class="section-container">
+      <div id="loginContainer">
+      <form id="registerForm">
+        <input type="name" id="registerName" class="input" placeholder="name">
+        <input type="email" id="registerEmail" class="input" placeholder="email">
+        <input type="password" id="registerPassword" class="input" placeholder="password">
+        <button>Register</button>
+      </form>
+      <form id="loginForm">
+        <input type="email" id="email" class="input" placeholder="email">
+        <input type="password" id="password" class="input" placeholder="password">
+        <button>Login</button>
+      </form>
+      </div>
         <section id="productSection">
           <h2>Products</h2>
           <form id="productForm">
@@ -30,22 +42,6 @@
           </form>
           <ul id="productList"></ul>
         </section>
-
-        <section id="orderSection">
-          <h2>Orders</h2>
-          <form id="orderForm">
-            <label for="orderInput">New</label>
-            <input
-              type="text"
-              id="orderInput"
-              class="input"
-              placeholder="order"
-            />
-            <button class="create-btn">Create</button>
-            <ul id="orderList"></ul>
-          </form>
-        </section>
-      </div>
     </div>
 
     <script type="module" src="/src/main.ts"></script>
