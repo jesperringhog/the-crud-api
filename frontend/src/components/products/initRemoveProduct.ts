@@ -1,5 +1,5 @@
-import { removeProduct } from "../services/productService";
-import { refreshProductList } from "./refreshProductList";
+import { refreshProductList } from "../../components/products/refreshProductList";
+import { removeProduct } from "../../services/productService";
 
 export const initRemoveProduct = async (
   id: number,

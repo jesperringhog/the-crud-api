@@ -24,10 +24,10 @@ export const getProducts = async (
   const sortOption: any = {};
 
   if (sort) {
-    sort === "asc" ? sortOption.id = 1 : sortOption.id = -1;
+    sort === "asc" ? (sortOption.id = 1) : (sortOption.id = -1);
   }
 
-  filter ? query.name = { $regex: filter, $options: "i"} : {};
+  filter ? (query.name = { $regex: filter, $options: "i" }) : {};
 
   const products = await Product.find(query).sort(sortOption);
 
@@ -36,7 +36,7 @@ export const getProducts = async (
 
 export const updateProduct = async (product: dbProduct) => {
   const updated = await Product.findOneAndUpdate({ id: product.id }, product, {
-    new: true,
+    returnDocument: "after",
   });
 
   if (!updated) return false;

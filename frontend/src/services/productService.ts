@@ -2,13 +2,14 @@ import type { Product } from "../models/Product";
 
 const BASE_URL = "http://localhost:3000/products/";
 
-export const createProduct = async (nameText: string, priceText: number) => {
+export const createProduct = async (title: string, price: number) => {
   try {
     const response = await fetch(BASE_URL, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ name: nameText, price: priceText }),
+      body: JSON.stringify({ title, price }),
     });
+    
     return await response.json();
   } catch (error) {
     console.error(error);

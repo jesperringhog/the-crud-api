@@ -30,19 +30,18 @@ app.use(json());
 app.use(
   cors({
     origin: "http://localhost:5173",
+    credentials: true,
   }),
 );
 app.use(cookieparser())
 
 app.use("/products", productRouter);
-app.use("/orders", auth, orderRouter);
+app.use("/orders", orderRouter);
 app.use("/register", registerRouter);
 app.use("/login", loginRouter);
 
 app.listen(port, async (error) => {
-  if (error) {
-    console.error(error);
-  }
+  if (error) console.error(error);
 
   try {
     await mongoose.connect(mongoUri);

@@ -12,9 +12,7 @@ loginRouter.post("/", async (req, res) => {
   if (
     (!email && email.trim() === "") ||
     (!password && password.trim() === "")
-  ) {
-    return res.status(400).json({ message: "Invalid login credentials" });
-  }
+  ) return res.status(400).json({ message: "Invalid login credentials" });
 
   try {
     const loggedInUser = await login(email, password);

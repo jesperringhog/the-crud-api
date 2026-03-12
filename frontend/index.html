@@ -7,10 +7,47 @@
   </head>
   <body>
     <div id="app">
-      <div id="cube">
-        <div class="cubeTop"></div>
+      <h1>The CRUD Api</h1>
+      <div class="section-container">
+        <section id="productSection">
+          <h2>Products</h2>
+          <form id="productForm">
+            <label for="titleInput">New</label>
+            <input
+              type="text"
+              id="titleInput"
+              class="input"
+              placeholder="product"
+            />
+            <label for="priceInput">Set</label>
+            <input
+              type="number"
+              id="priceInput"
+              class="input"
+              placeholder="price"
+            />
+            <button class="create-btn">Create</button>
+          </form>
+          <ul id="productList"></ul>
+        </section>
+
+        <section id="orderSection">
+          <h2>Orders</h2>
+          <form id="orderForm">
+            <label for="orderInput">New</label>
+            <input
+              type="text"
+              id="orderInput"
+              class="input"
+              placeholder="order"
+            />
+            <button class="create-btn">Create</button>
+            <ul id="orderList"></ul>
+          </form>
+        </section>
       </div>
     </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

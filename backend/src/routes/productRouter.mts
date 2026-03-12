@@ -54,11 +54,12 @@ productRouter.patch("/:id", async (req, res) => {
     if (id && +id === product.id) {
       const success = await updateProduct(product);
 
-      if (success) return res.status(200).json(success);
+      if (!success)
+        return res.status(400).json({
+          message: "Update failed. Body is missing property: id",
+        });
 
-      return res.status(400).json({
-        message: "Update failed. Body is missing property: id",
-      });
+      return res.status(200).json(success);
     }
 
     res.status(404).json({
@@ -77,10 +78,9 @@ productRouter.delete("/:id", async (req, res) => {
     if (id) {
       const success = await removeProduct(id);
 
-      if (success) {
-        return res.status(200).json();
-      }
-      res.status(400).json({ message: `Id: ${id} not found` });
+      if (!success)
+        return res.status(400).json({ message: `Id: ${id} not found` });
+      else return res.status(200).json();
     }
   } catch (error) {
     console.error(error);

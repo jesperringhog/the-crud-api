@@ -1,6 +1,5 @@
 import express from "express";
 import {
-  createOrder,
   getOrders,
   removeOrder,
   updateOrder,
@@ -9,29 +8,28 @@ import type { OrderDTO } from "../models/order/OrderDTO.mjs";
 
 export const orderRouter = express.Router();
 
-orderRouter.post("/", async (req, res) => {
-  try {
-    const { user } = req.body;
+// orderRouter.post("/", async (req, res) => {
+//   const { user } = req.body;
 
-    if (!user || user.trim() === "") {
-      return res.status(400).json({
-        message: "Body is missing property: user, or its value is empty",
-      });
-    }
+//   if (!user || user.trim() === "")
+//     return res.status(400).json({
+//       message: "Body is missing property: user, or its value is empty",
+//     });
 
-    const created: OrderDTO = await createOrder(user);
+//   try {
+//     const created: OrderDTO = await createOrder(user);
 
-    res.status(201).json(created);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json(error);
-  }
-});
+//     res.status(201).json(created);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json(error);
+//   }
+// });
 
 orderRouter.get("/", async (req, res) => {
-  try {
-    const { sort, filter } = req.query;
+  const { sort, filter } = req.query;
 
+  try {
     const orders = await getOrders(sort, filter);
 
     res.status(200).json(orders);
@@ -42,20 +40,19 @@ orderRouter.get("/", async (req, res) => {
 });
 
 orderRouter.patch("/:orderNumber", async (req, res) => {
-  try {
-    const { orderNumber } = req.params;
-    const { order }: { order: OrderDTO } = req.body;
+  const { orderNumber } = req.params;
+  const { order }: { order: OrderDTO } = req.body;
 
+  try {
     if (orderNumber && +orderNumber === order.orderNumber) {
       const success = await updateOrder(order);
 
-      if (success) {
-        return res.status(200).json(success);
-      }
+      if (!success)
+        return res.status(400).json({
+          message: "Update failed. Body is missing property: orderNumber",
+        });
 
-      return res.status(400).json({
-        message: "Update failed. Body is missing property: orderNumber",
-      });
+      return res.status(200).json(success);
     }
 
     res.status(404).json({
@@ -68,18 +65,16 @@ orderRouter.patch("/:orderNumber", async (req, res) => {
 });
 
 orderRouter.delete("/:orderNumber", async (req, res) => {
+  const { orderNumber } = req.params;
+  
   try {
-    const { orderNumber } = req.params;
+    if (!orderNumber) return res
+        .status(404)
+        .json(`Delete failed. Can not find ordernumber: ${orderNumber}`);
 
-    if (orderNumber) {
       const success = await removeOrder(orderNumber);
 
-      if (success) {
-        return res.status(200).json();
-      }
-
-      res.status(404).json(`Delete failed. Can not find ordernumber: ${orderNumber}`);
-    }
+      if (success) res.status(200).json();
   } catch (error) {
     console.error(error);
     res.status(500).json(error);

@@ -14,9 +14,8 @@ registerRouter.post("/", async (req, res) => {
     name.trim() === "" ||
     email.trim() === "" ||
     password.trim() === ""
-  ) {
-    res.status(400).json({ message: "Invalid credentials" });
-  }
+  )
+    return res.status(400).json({ message: "Invalid credentials" });
 
   try {
     const newUser = await createUser({ name, email, password });

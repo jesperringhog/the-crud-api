@@ -1,4 +1,4 @@
-import type { Product } from "../models/Product";
+import type { Product } from "../../models/Product";
 import { initUpdateProduct } from "./initUpdateProduct";
 
 export const createHtmlUpdateForm = (
@@ -11,8 +11,10 @@ export const createHtmlUpdateForm = (
   const updateBtn = document.createElement("button");
 
   updateLabel.textContent = "Change";
-  updateInput.placeholder = "product name";
+  updateInput.placeholder = "product title";
+  updateInput.classList.add("input");
   updateBtn.textContent = "Update";
+  updateBtn.classList.add("update-btn");
 
   updateForm.addEventListener("submit", (e) => {
     e.preventDefault();
