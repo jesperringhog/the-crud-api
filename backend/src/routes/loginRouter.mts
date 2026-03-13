@@ -10,8 +10,8 @@ loginRouter.post("/", async (req, res) => {
   const { email, password } = req.body;
 
   if (
-    (!email && email.trim() === "") ||
-    (!password && password.trim() === "")
+    (!email || email.trim() === "") ||
+    (!password || password.trim() === "")
   ) return res.status(400).json({ message: "Invalid login credentials" });
 
   try {
@@ -20,15 +20,13 @@ loginRouter.post("/", async (req, res) => {
     const loginToken = jwt.sign(
       dbUserToDto(loggedInUser),
       process.env.JWT_SECRET!,
-      { expiresIn: "1h" },
     );
 
     const expires = new Date();
     expires.setHours(expires.getHours() + 1);
 
     res.cookie("login", loginToken, {
-      httpOnly: true,
-      sameSite: "strict",
+      httpOnly: false,
       expires,
     });
 

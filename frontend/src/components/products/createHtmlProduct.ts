@@ -1,6 +1,6 @@
 import type { Product } from "../../models/Product";
 import { initRemoveProduct } from "./initRemoveProduct";
-import { createHtmlUpdateForm } from "./initUpdateProductForm";
+import { createHtmlUpdateForm } from "./createHtmlUpdateForm";
 
 export const createHtmlForProduct = (product: Product) => {
         const productContainer = document.createElement("li");
@@ -13,7 +13,7 @@ export const createHtmlForProduct = (product: Product) => {
         id.textContent = product.id.toString();
         title.textContent = product.title;
         price.textContent = product.price.toString();
-        removeBtn.textContent = "Remove";
+        removeBtn.textContent = "Delete";
         removeBtn.classList.add("remove-btn");
 
         createHtmlUpdateForm(product, productContainer);

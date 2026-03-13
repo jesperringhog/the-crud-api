@@ -27,7 +27,7 @@ export const getProducts = async (
     sort === "asc" ? (sortOption.id = 1) : (sortOption.id = -1);
   }
 
-  filter ? (query.name = { $regex: filter, $options: "i" }) : {};
+  filter ? (query.title = { $regex: filter, $options: "i" }) : {};
 
   const products = await Product.find(query).sort(sortOption);
 

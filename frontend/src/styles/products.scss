@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 #productSection {
   background-color: lightgrey;
   border: solid black;
@@ -9,9 +11,12 @@
   padding: 2rem;
   align-items: center;
 
+  #showProducts {
+    @include btn(lightgreen);
+  }
+
   .create-btn {
-    background-color: yellow;
-    color: black;
+    @include btn(yellow);
   }
 }
 
@@ -29,12 +34,10 @@
   margin: 1rem;
 
   .update-btn {
-    background-color: purple;
-    color: white;
+    @include btn(plum);
   }
 
   .remove-btn {
-    background-color: red;
-    color: white;
+    @include btn(lightcoral);
   }
 }

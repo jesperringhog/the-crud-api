@@ -13,7 +13,7 @@ export const registerUser = async (user: User) => {
     });
 
     if (response.status === 201) {
-      return console.log(`${user.name} is now registered`);
+      return true;
     }
   } catch (error) {
     console.error(error);

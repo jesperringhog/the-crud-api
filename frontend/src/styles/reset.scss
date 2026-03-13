@@ -15,22 +15,10 @@ html {
     align-items: center;
     gap: 1rem;
 
-    .input {
+    input {
       border-radius: 1rem;
       margin: 0 1rem;
       padding: 0.5rem;
-    }
-
-    button {
-      font-weight: bold;
-      border-radius: 1rem;
-      padding: 1rem;
-      cursor: pointer;
-
-      &:hover {
-        background-color: black;
-        color: white;
-      }
     }
   }
 }

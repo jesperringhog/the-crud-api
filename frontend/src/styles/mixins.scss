@@ -1,0 +1,12 @@
+@mixin btn($bg-color: black) {
+  background-color: $bg-color;
+  font-weight: bold;
+  border-radius: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}

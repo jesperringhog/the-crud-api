@@ -1,18 +1,24 @@
 import "/src/styles/style.scss";
 import { refreshProductList } from "./components/products/refreshProductList";
-import { initCreateProduct } from "./components/products/initCreateProduct";
 import { initRegister } from "./utils/initRegister";
+import { initLogin } from "./utils/initLogin";
+import { initCreateProduct } from "./components/products/initCreateProduct";
 
 document.getElementById("registerForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-
   initRegister();
 });
 
-document.getElementById("productForm")?.addEventListener("submit", (e) => {
+document.getElementById("loginForm")?.addEventListener("submit", (e) => {
   e.preventDefault();
-
-  initCreateProduct();
+  initLogin();
 });
 
-refreshProductList();
+document.getElementById("createForm")?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  initCreateProduct();
+})
+
+document
+  .getElementById("showProducts")
+  ?.addEventListener("click", refreshProductList);
