@@ -12,5 +12,8 @@
     "sass-embedded": "^1.97.3",
     "typescript": "~5.9.3",
     "vite": "^7.3.1"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.3"
   }
 }
